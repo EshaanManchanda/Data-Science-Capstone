@@ -1,0 +1,51 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# Virtual Environment
+venv
+env
+ENV
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# Data (large files)
+data/raw/*.csv
+data/processed/*.csv
+models/*.pkl
+
+# Logs
+*.log
+logs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+.pytest_cache
+htmlcov
+.coverage
+
+# Documentation
+docs/*.md
+!docs/*.gitkeep

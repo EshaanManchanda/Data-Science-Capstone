@@ -1,0 +1,112 @@
+# Project Configuration
+project:
+  name: "SpaceX Falcon 9 Landing Prediction"
+  version: "1.0.0"
+  description: "Predict Falcon 9 first stage landing success"
+
+# Data Configuration
+data:
+  raw_path: "data/raw/"
+  processed_path: "data/processed/"
+  external_path: "data/external/"
+  output_path: "output/"
+  test_size: 0.2
+  random_state: 42
+
+# Preprocessing Configuration
+preprocessing:
+  handle_missing:
+    numeric_strategy: "median"
+    categorical_strategy: "mode"
+  encoding:
+    categorical_method: "onehot"
+  scaling:
+    method: "standard"
+  feature_selection:
+    method: "importance"
+    n_features: 10
+
+# Model Configuration
+models:
+  logistic_regression:
+    enabled: true
+    params:
+      C: 1.0
+      max_iter: 1000
+      random_state: 42
+
+  decision_tree:
+    enabled: true
+    params:
+      max_depth: 10
+      min_samples_split: 5
+      random_state: 42
+
+  random_forest:
+    enabled: true
+    params:
+      n_estimators: 100
+      max_depth: 10
+      min_samples_split: 5
+      random_state: 42
+
+  xgboost:
+    enabled: true
+    params:
+      n_estimators: 100
+      max_depth: 6
+      learning_rate: 0.1
+      random_state: 42
+
+  lightgbm:
+    enabled: true
+    params:
+      n_estimators: 100
+      max_depth: 6
+      learning_rate: 0.1
+      random_state: 42
+
+# Cross-Validation
+cv:
+  n_splits: 5
+  scoring: "roc_auc"
+  n_jobs: -1
+
+# Hyperparameter Tuning
+hyperparameter:
+  enabled: true
+  method: "gridsearch"
+  cv: 5
+  n_jobs: -1
+
+# Evaluation Metrics
+metrics:
+  - "accuracy"
+  - "precision"
+  - "recall"
+  - "f1"
+  - "roc_auc"
+
+# Deployment Configuration
+deployment:
+  streamlit:
+    port: 8501
+    debug: false
+
+  flask:
+    host: "0.0.0.0"
+    port: 5000
+    debug: true
+
+# Visualization
+visualization:
+  style: "seaborn"
+  color_palette: "viridis"
+  figure_size: [12, 8]
+  dpi: 100
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/project.log"
