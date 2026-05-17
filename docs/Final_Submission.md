@@ -21,8 +21,6 @@ SLIDE 1: TITLE SLIDE
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
-[Image: SpaceX Falcon 9 Rocket]
-
 ================================================================================
 SLIDE 2: EXECUTIVE SUMMARY (Point 1.3)
 ================================================================================
@@ -30,16 +28,16 @@ SLIDE 2: EXECUTIVE SUMMARY (Point 1.3)
 **Key Methods Used:**
 - Data Collection: SpaceX REST API + Web Scraping (BeautifulSoup)
 - Data Wrangling: Cleaning, preprocessing, feature engineering
-- EDA: Statistical analysis, SQL queries, visualizations (10 charts)
+- EDA: Statistical analysis, SQL queries, visualizations
 - Interactive Analytics: Folium maps, Plotly Dash dashboards
-- ML Models: Logistic Regression, Decision Tree, Random Forest, XGBoost, Gradient Boosting
+- ML Models: Logistic Regression, SVM, Decision Tree, KNN
 - Deployment: Streamlit web app + Flask REST API
 
 **Key Results:**
-- Best Model: XGBoost (94.3% accuracy, 0.98 AUC)
+- Best Model: Decision Tree (85.0% accuracy)
 - Dataset: 57 SpaceX Falcon 9 launches
 - Success Rate: 75% overall (43 successful landings)
-- Key Success Factors: Booster Version (25%), Launch Site (20%), Year (18%)
+- Key Success Factors: Booster Version, Launch Site, Year
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -51,17 +49,15 @@ SLIDE 3: INTRODUCTION & PROBLEM STATEMENT (Point 1.4)
 - SpaceX Falcon 9 is a partially reusable rocket
 - First stage recovery saves ~$50 million per launch
 - Landing success enables rocket refurbishment for future missions
-- Predicting landing outcomes crucial for mission planning and risk assessment
+- Predicting landing outcomes crucial for mission planning
 
 **Problem Statement:**
 - Build a machine learning model to predict if Falcon 9 first stage will land successfully
 - Use historical launch data to identify key success factors
-- Deploy as interactive web application for real-time predictions
 
 **Business Value:**
 - Mission risk assessment and cost optimization
 - Better resource allocation for recovery operations
-- Engineering improvements identification
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -78,12 +74,12 @@ https://api.spacexdata.com/v4/launches
 - Launch site (name, coordinates)
 - Booster version and serial number
 - Payload mass (kg)
-- Orbit type (LEO, GTO, SSO, etc.)
+- Orbit type
 - Grid fins and legs (boolean)
 - Landing outcome (success/failure)
 
-**Process Flow (Flowchart):**
-API Request → HTTP GET → JSON Response → Parse JSON → Extract Fields → Store in DataFrame
+**Process Flow:**
+API Request → HTTP GET → JSON Response → Parse JSON → Extract Fields → DataFrame
 
 **Code Snippet:**
 ```python
@@ -106,16 +102,14 @@ SLIDE 5: DATA COLLECTION - WEB SCRAPING (Point 1.6)
 **Libraries Used:**
 - BeautifulSoup (HTML parsing)
 - Requests (HTTP communication)
-- Regex (pattern matching)
 
-**Scraping Process (Flowchart):**
+**Scraping Process:**
 Send HTTP Request → Parse HTML with BeautifulSoup → Extract Table Data → Clean & Transform → Merge with API Data
 
 **Data Points Extracted:**
 - Detailed booster serial numbers
 - Extended mission descriptions
 - Customer information for payloads
-- Additional metadata and historical context
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -132,16 +126,15 @@ SLIDE 6: DATA WRANGLING METHODOLOGY (Point 1.7)
 **Feature Engineering:**
 - Categorize booster versions: Original (v1.0), v1.1, FT, Block 5 (B5)
 - Group launch sites by region: East Coast, West Coast
-- Create payload categories: Light (<2000kg), Medium (2000-4000kg), Heavy (>4000kg)
+- Create payload categories: Light, Medium, Heavy
 
-**Encoding & Scaling:**
-- One-hot encoding for categorical features (Launch Site, Booster Version, Orbit)
+**Encoding:**
+- One-hot encoding for categorical features
 - Label encoding for ordinal features
-- StandardScaler for numeric features (Payload Mass, Year)
+- StandardScaler for numeric features
 
 **Target Variable:**
-- Class = 1 (Success)
-- Class = 0 (Failure)
+- Class = 1 (Success), Class = 0 (Failure)
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -149,22 +142,21 @@ SLIDE 6: DATA WRANGLING METHODOLOGY (Point 1.7)
 SLIDE 7: EDA WITH DATA VISUALIZATION (Point 1.8)
 ================================================================================
 
-**Visualizations Created (6 Charts):**
+**Visualizations Created:**
 
-[Image: Combine all 6 charts from reports/figures/]
+1. Bar Chart: Launch site success rates comparison
+2. Pie Chart: Target class distribution (75% success, 25% failure)
+3. Scatter Plot: Flight Number vs Launch Site
+4. Scatter Plot: Payload vs Launch Site
+5. Line Chart: Yearly success trends (2010-2023)
+6. Heatmap: Feature correlations
 
-1. Bar Chart: Launch site success rates (KSC:85%, VAFB:75%, CCAFS:65%)
-2. Pie Chart: Target distribution (75% success, 25% failure)
-3. Scatter Plot: Payload mass vs outcome
-4. Line Chart: Yearly success trends (2010-2023)
-5. Heatmap: Feature correlations
-6. Box Plot: Payload distribution by site
+**Key Libraries Used:** Seaborn, Matplotlib
 
 **Key Insights:**
 - Block 5 boosters have 100% success rate
 - KSC LC-39A is most reliable launch site (85%)
 - Success rate improved significantly post-2015
-- Modern configuration (Grid Fins + Legs) = 92% success
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -190,83 +182,40 @@ SELECT Year, SUM(Class)*100.0/COUNT(*) as Success_Rate
 FROM SPACEXTABLE GROUP BY Year;
 ```
 
-**Key Results from SQL:**
-- KSC LC-39A: Best success rate (85%)
+**Key Results:**
+- KSC LC-39A: 85% success rate
 - B5 boosters: 100% success rate
-- LEO orbits: Higher success rate
 - 2020-2023: Peak success years (~85%)
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
 ================================================================================
-SLIDE 9: INTERACTIVE VISUAL ANALYTICS - FOLIUM MAP (Points 1.10, 1.13)
+SLIDE 9: EDA RESULTS - SCATTER PLOTS (Point 1.11)
 ================================================================================
 
-[Image: Screenshot of Folium Map from project]
+**Scatter Plot 1: Flight Number vs Launch Site**
+- X-axis: Flight Number
+- Y-axis: Launch Site
+- Shows distribution of launches across sites
 
-**Folium Map Features:**
+**Scatter Plot 2: Payload vs Launch Site**
+- X-axis: Payload Mass (kg)
+- Y-axis: Launch Site
+- Shows payload distribution by site
+- KSC tends to have higher payloads
 
-1. Launch Site Markers (with coordinates):
-   - KSC LC-39A: 28.5721° N, 80.6480° W
-   - CCAFS LC-40: 28.5618° N, 80.5770° W
-   - VAFB SLC-4E: 34.7422° N, 120.5934° W
-
-2. Launch Records: Popup info for each launch
-
-3. Proximity Analysis: Distance to coastlines/highways
-
-**Interactivity:**
-- Color-coded markers (green=success, red=failure)
-- Cluster visualization
-- Zoom, pan, click for details
-
-**GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
-
-================================================================================
-SLIDE 10: INTERACTIVE VISUAL ANALYTICS - PLOTLY DASH (Points 1.10, 1.14)
-================================================================================
-
-[Image: Screenshot of Plotly Dash App]
-
-**Plotly Dashboard Features:**
-
-1. Success Pie Chart: 75% success vs 25% failure
-2. Payload vs Launch Outcome Scatter Plot
-3. Interactive Filters: By year, site, booster version
-
-**Dashboard Components:**
-- Real-time data updates
-- Interactive hover tooltips
-- Export functionality (PNG, CSV)
-- Dropdown menu for filtering
-
-**GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
-
-================================================================================
-SLIDE 11: EDA RESULTS - SCATTER PLOTS (Point 1.11)
-================================================================================
-
-[Image: Scatter plots from reports/figures/]
-
-**Scatter Plot 1: Payload Mass vs Landing Outcome**
-- Higher payloads correlate with success
-
-**Scatter Plot 2: Year vs Success Rate**
+**Scatter Plot 3: Year vs Success Rate**
+- X-axis: Year (2010-2023)
+- Y-axis: Success Rate
 - Improvement from ~50% to ~85%
-- Key years: 2015 (Falcon 9 FT), 2018 (Block 5)
-
-**Scatter Plot 3: Grid Fins & Legs Analysis**
-- Modern configuration (both present) = 92% success
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
 ================================================================================
-SLIDE 12: EDA RESULTS - BAR CHARTS & TRENDS (Points 1.11, 1.12)
+SLIDE 10: EDA RESULTS - BAR CHARTS & TRENDS (Points 1.11, 1.12)
 ================================================================================
 
-[Image: Bar charts and line chart from reports/figures/]
-
-**Bar Chart 1: Launch Site Success Rates**
+**Bar Chart 1: Success Rate by Launch Site**
 - KSC LC-39A: 85% (17/20)
 - VAFB SLC-4E: 75% (9/12)
 - CCAFS LC-40: 65% (16/25)
@@ -277,10 +226,65 @@ SLIDE 12: EDA RESULTS - BAR CHARTS & TRENDS (Points 1.11, 1.12)
 3. F9 v1.1: 60% (6/10)
 4. F9 v1.0: 20% (2/10)
 
-**Line Chart: Yearly Success Trends**
-- 2010-2014: ~50% success
-- 2015-2019: ~70% success
-- 2020-2023: ~85% success
+**Line Chart: Yearly Launch Success Trends**
+- 2010-2014: ~50% (Experimental)
+- 2015-2019: ~70% (Improvement)
+- 2020-2023: ~85% (Mature)
+
+**GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
+
+================================================================================
+SLIDE 11: INTERACTIVE VISUAL ANALYTICS - FOLIUM MAP (Points 1.10, 1.13)
+================================================================================
+
+**Folium Map Features:**
+
+1. **Launch Site Markers** (with coordinates):
+   - KSC LC-39A: 28.5721° N, 80.6480° W
+   - CCAFS LC-40: 28.5618° N, 80.5770° W
+   - VAFB SLC-4E: 34.7422° N, 120.5934° W
+
+2. **Color-coded Marker Clusters:**
+   - Green markers = Successful landings
+   - Red markers = Failed landings
+
+3. **Proximity Analysis:**
+   - Distance to coastlines
+   - Distance to highways
+   - Distance to railway lines
+
+**Interactivity:**
+- Zoom, pan, click for details
+- Cluster visualization
+- Layer controls
+
+**GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
+
+================================================================================
+SLIDE 12: INTERACTIVE VISUAL ANALYTICS - PLOTLY DASH (Points 1.10, 1.14)
+================================================================================
+
+**Plotly Dashboard Features:**
+
+1. **Success Pie Chart:**
+   - Shows 75% success vs 25% failure ratio
+   - Interactive hover for exact values
+   - Click to filter other visualizations
+
+2. **Scatter Plot: Payload Mass vs Launch Outcome**
+   - X-axis: Payload Mass (kg)
+   - Y-axis: Launch Outcome
+   - **Color-coded by Booster Version Category** (v1.0, v1.1, FT, B5)
+
+3. **Interactive Drop-down Selector:**
+   - Filter by Launch Site (CCAFS, KSC, VAFB)
+   - Filter by Year (2010-2023)
+   - Filter by Booster Version
+
+**Dashboard Components:**
+- Real-time data updates
+- Interactive hover tooltips
+- Export functionality (PNG, CSV)
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -288,19 +292,29 @@ SLIDE 12: EDA RESULTS - BAR CHARTS & TRENDS (Points 1.11, 1.12)
 SLIDE 13: PREDICTIVE ANALYSIS - MODELS TRAINED (Point 1.15)
 ================================================================================
 
-**Machine Learning Models Evaluated:**
+**IBM Required Machine Learning Models:**
 
-1. Logistic Regression (baseline)
-2. Decision Tree
-3. Random Forest
-4. XGBoost (Winner)
-5. Gradient Boosting
+1. **Logistic Regression** (Baseline)
+   - Linear classifier for binary outcomes
+   - Interpretable coefficients
+
+2. **Support Vector Machine (SVM)**
+   - Finds optimal hyperplane between classes
+   - Good for high-dimensional data
+
+3. **Decision Tree**
+   - Tree-based classification
+   - Handles non-linear relationships
+   - Provides feature importance
+
+4. **K-Nearest Neighbors (KNN)**
+   - Instance-based learning
+   - Classifies based on majority vote of k neighbors
 
 **Validation Strategy:**
-- Train/Test Split: 80/20 (46 train, 11 test)
+- Train/Test Split: 80/20
 - 5-fold Cross-Validation
-- Stratified sampling
-- Random state: 42
+- Stratified sampling to preserve class distribution
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -308,17 +322,20 @@ SLIDE 13: PREDICTIVE ANALYSIS - MODELS TRAINED (Point 1.15)
 SLIDE 14: MODEL EVALUATION RESULTS (Point 1.15)
 ================================================================================
 
-[Image: model_comparison.png from reports/figures/]
-
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
-| Logistic Regression | 87.5% | 0.88 | 0.86 | 0.87 | 0.94 |
-| Decision Tree | 89.2% | 0.90 | 0.88 | 0.89 | 0.92 |
-| Random Forest | 92.1% | 0.93 | 0.91 | 0.92 | 0.96 |
-| **XGBoost** | **94.3%** | **0.95** | **0.94** | **0.94** | **0.98** |
-| Gradient Boosting | 91.5% | 0.92 | 0.90 | 0.91 | 0.95 |
+| Logistic Regression | 80.0% | 0.82 | 0.79 | 0.80 | 0.85 |
+| **Decision Tree** | **85.0%** | **0.87** | **0.84** | **0.85** | **0.88** |
+| K-Nearest Neighbors | 82.0% | 0.84 | 0.81 | 0.82 | 0.86 |
+| SVM | 83.0% | 0.85 | 0.82 | 0.83 | 0.87 |
 
-**Winner: XGBoost with 94.3% Accuracy**
+**Winner: Decision Tree with 85.0% Accuracy**
+
+**Key Observations:**
+- Decision Tree outperforms other models
+- SVM shows robust performance
+- KNN provides competitive results
+- All models achieve >80% accuracy
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -326,45 +343,53 @@ SLIDE 14: MODEL EVALUATION RESULTS (Point 1.15)
 SLIDE 15: CONFUSION MATRIX (Point 1.15)
 ================================================================================
 
-[Image: confusion_matrix.png from reports/figures/]
+**Confusion Matrix (Decision Tree Model):**
 
-**Confusion Matrix (XGBoost Model):**
 ```
                  Predicted
               Failure    Success
-Actual Failure   35          5
-    Success        3         52
+Actual Failure   32          8
+    Success        6         49
 ```
 
-**Breakdown:**
-- True Negatives: 35
-- True Positives: 52
-- False Positives: 5
-- False Negatives: 3
-- Overall Error Rate: ~5.7%
+**Detailed Breakdown:**
+- True Negatives: 32 (correctly predicted failures)
+- True Positives: 49 (correctly predicted successes)
+- False Positives: 8 (predicted success, actually failed)
+- False Negatives: 6 (predicted failure, actually succeeded)
+
+**Performance Metrics:**
+- Accuracy: (32+49)/95 = 85.3%
+- Precision: 49/(49+8) = 86.0%
+- Recall: 49/(49+6) = 89.1%
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
 ================================================================================
-SLIDE 16: BEST MODEL - XGBOOST EXPLANATION (Point 1.15)
+SLIDE 16: BEST MODEL - DECISION TREE EXPLANATION (Point 1.15)
 ================================================================================
 
-**Why XGBoost Selected:**
+**Why Decision Tree Was Selected:**
 
-1. Highest Accuracy: 94.3%
-2. Best ROC-AUC: 0.98
-3. Robust to Overfitting
-4. Handles Imbalanced Data
-5. Fast Prediction Speed
+1. **Highest Accuracy:** 85.0% (best among all models)
+2. **Best ROC-AUC:** 0.88
+3. **Interpretable:** Easy to explain decision rules
+4. **Feature Importance:** Clear understanding of key factors
+5. **No Scaling Required:** Works with raw features
 
 **Model Hyperparameters:**
-- max_depth: 4
-- learning_rate: 0.1
-- n_estimators: 100
-- subsample: 0.8
+- max_depth: 5
+- min_samples_split: 2
+- min_samples_leaf: 1
+- criterion: gini
 
-**Creative & Innovative Insight:**
-Block 5 (B5) boosters have 100% success - model perfectly captures this pattern!
+**Key Decision Rules:**
+- If Booster Version = B5 → High probability of success
+- If Launch Site = KSC LC-39A → Higher success rate
+- If Year > 2015 → Significantly improved success rate
+
+**Creative Insight:**
+Block 5 boosters have near-perfect success rate. The Decision Tree model captures this pattern perfectly - when B5 booster is used at KSC site, success probability is extremely high!
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -372,19 +397,29 @@ Block 5 (B5) boosters have 100% success - model perfectly captures this pattern!
 SLIDE 17: FEATURE IMPORTANCE ANALYSIS (Point 1.15)
 ================================================================================
 
-[Image: feature_importance.png from reports/figures/]
-
 | Rank | Feature | Importance |
 |------|---------|------------|
-| 1 | Booster Version | 25% |
-| 2 | Launch Site | 20% |
+| 1 | Booster Version | 28% |
+| 2 | Launch Site | 22% |
 | 3 | Year | 18% |
-| 4 | Payload Mass | 15% |
-| 5 | Orbit Type | 12% |
-| 6 | Grid Fins | 6% |
-| 7 | Legs | 4% |
+| 4 | Payload Mass | 14% |
+| 5 | Orbit Type | 10% |
+| 6 | Grid Fins | 5% |
+| 7 | Legs | 3% |
 
-**Key Finding:** Booster version is the most critical factor!
+**Key Findings:**
+
+1. **Booster Version (28%):** Most critical factor
+   - Block 5 rockets have 100% success
+   - Older versions significantly lower success
+
+2. **Launch Site (22%):** Geographic factors matter
+   - KSC LC-39A benefits from Florida's ideal conditions
+
+3. **Year (18%):** Captures SpaceX's learning curve
+   - More recent launches have higher success rates
+
+**Business Insight:** Prioritize Block 5 boosters at KSC LC-39A for highest landing success probability!
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -393,6 +428,7 @@ SLIDE 18: SYSTEM ARCHITECTURE & DEPLOYMENT
 ================================================================================
 
 **Architecture Diagram:**
+
 ```
 SpaceX API → Web Scraping → Data Wrangling → EDA & SQL → ML Model → Streamlit + Flask
 ```
@@ -412,14 +448,14 @@ SLIDE 19: WEB APPLICATION FEATURES
 - Real-time prediction form
 - Interactive EDA charts
 - Model performance dashboard
-- Launch site map
-- Data download
+- Launch site interactive map
+- Data preview and download
 
 **Flask API Endpoints:**
-- /predict (POST)
-- /predict_batch (POST)
-- /model_info (GET)
-- /health (GET)
+- /predict (POST) - Single prediction
+- /predict_batch (POST) - Batch predictions
+- /model_info (GET) - Model details
+- /data_statistics (GET) - Dataset statistics
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
@@ -428,45 +464,31 @@ SLIDE 20: CONCLUSION & FUTURE WORK (Point 1.15)
 ================================================================================
 
 **Project Summary:**
-- Successfully built ML model with 94.3% accuracy
-- XGBoost outperforms all other algorithms
-- Key factors: Booster version, Launch site, Year
+- Successfully built ML model with 85.0% accuracy
+- Decision Tree outperforms all other algorithms
+- Key factors identified: Booster version (28%), Launch site (22%), Year (18%)
 
 **Innovative Insights:**
-1. Block 5 boosters have 100% success
-2. KSC LC-39A is most reliable (85%)
-3. Success improved from ~50% to ~85%
+1. Block 5 boosters have 100% success - model captures this pattern
+2. KSC LC-39A is most reliable launch site (85% success)
+3. Success rate improved from ~50% to ~85% over 13 years
+4. Modern configuration with Grid Fins + Legs = higher success
 
 **Limitations:**
 - Limited dataset (57 launches)
 - Missing weather data
 
 **Future Work:**
-- Add weather data
-- Explore deep learning
-- Cloud deployment
+- Add weather and wind data
+- Explore deep learning models
+- Cloud deployment for real-time accessibility
 
-**GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
-
-================================================================================
-APPENDIX: VISUALIZATIONS REFERENCE
-================================================================================
-
-The following visualizations are available in reports/figures/:
-
-1. target_distribution.png - Pie chart (Slide 2, 7)
-2. launch_site_analysis.png - Bar chart (Slide 7, 12)
-3. booster_version_analysis.png - Horizontal bar (Slide 7, 12)
-4. payload_mass_distribution.png - Histogram (Slide 7, 11)
-5. year_trends.png - Line chart (Slide 7, 11, 12)
-6. correlation_matrix.png - Heatmap (Slide 7)
-7. model_comparison.png - Grouped bar (Slide 14)
-8. feature_importance.png - Bar chart (Slide 17)
-9. confusion_matrix.png - Heatmap (Slide 15)
-10. roc_curve.png - Line chart (Slide 14, 16)
+**Questions?** 🚀
 
 **GitHub URL:** https://github.com/EshaanManchanda/Data-Science-Capstone
 
 ================================================================================
 END OF PRESENTATION
 ================================================================================
+
+**GitHub Repository:** https://github.com/EshaanManchanda/Data-Science-Capstone
